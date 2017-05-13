@@ -16,7 +16,7 @@ class CreateSegmentsTable extends Migration
         Schema::create('segments', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('slice_id')->unsigned();
-            $table->string('code')->unique();
+            $table->string('code');
             $table->integer('duration');
             $table->string('carrier_code');
             $table->string('carrier_name');

@@ -20,4 +20,9 @@ class Price extends Model
         return $this->belongsTo('App\Models\TripOption');
     }
 
+    public function scopeCheapest($query)
+    {
+        return $query->orderBy("price_total_brl", "ASC")->first();
+    }
+
 }

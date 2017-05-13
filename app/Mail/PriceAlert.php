@@ -13,17 +13,18 @@ class PriceAlert extends Mailable
 
     public $text;
     public $title;
-
+    public $trip_option;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($text, $title)
+    public function __construct($text, $title, $trip_option)
     {
         $this->text = $text;
         $this->title = $title;
+        $this->trip_option = $trip_option;
     }
 
     /**

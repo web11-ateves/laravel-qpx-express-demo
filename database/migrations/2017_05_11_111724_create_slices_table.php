@@ -16,13 +16,14 @@ class CreateSlicesTable extends Migration
         Schema::create('slices', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('trip_option_id')->unsigned();
-            $table->string('code')->unique();
+            $table->string('code');
             $table->integer('duration');
             $table->string('origin_airport')->nullable();
             $table->string('destination_airport')->nullable();
             $table->dateTime('departure_time')->nullable();
             $table->dateTime('arrival_time')->nullable();
             $table->integer('connection_duration')->nullable();
+            $table->integer('stops')->nullable();
             $table->timestamps();
         });
     }

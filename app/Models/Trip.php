@@ -29,7 +29,7 @@ class Trip extends Model
         'seniors'
     ];
 
-    protected $dates = ['departure_date', 'arrival_date'];
+    protected $dates = ['departure_date', 'return_date'];
 
     public function user()
     {
@@ -45,4 +45,6 @@ class Trip extends Model
     {
         $this->attributes['max_stops'] = $this->nonstop ? 0 : $value;
     }
+
+
 }

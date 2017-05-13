@@ -27,7 +27,7 @@ class CreateTripsTable extends Migration
             $table->string('prohibited_carriers')->nullable();
             $table->integer('max_connection_time')->nullable();
             $table->integer('max_stops')->nullable();
-            $table->integer('max_price')->nullable();
+            $table->string('max_price')->nullable();
             $table->string('earliest_departure_time')->nullable();
             $table->string('latest_departure_time')->nullable();
             $table->integer('adults')->nullable();

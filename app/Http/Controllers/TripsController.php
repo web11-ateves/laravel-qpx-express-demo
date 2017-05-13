@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Trip;
+use App\Models\TripOption;
 use Illuminate\Http\Request;
 
 class TripsController extends Controller
@@ -13,7 +15,9 @@ class TripsController extends Controller
      */
     public function index()
     {
-        //
+        $trips = Trip::all();
+        $page_title = "Pesquisas";
+        return view('trips.index', compact('trips', 'page_title'));
     }
 
     /**
@@ -43,9 +47,13 @@ class TripsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+        $trip = Trip::findOrFail($id);
+        $sort = $request->input('s', 'agony');
+        $trip_options = $trip->trip_options()->sortBy($sort)->get()->unique();
+        $page_title = $trip->description;
+        return view('trips.show', compact('trip_options', 'page_title', 'sort'));
     }
 
     /**
@@ -80,5 +88,20 @@ class TripsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function trip_option($id)
+    {
+        $trip_option = TripOption::findOrFail($id);
+        $page_title = "#$trip_option->id - Histórico de preços";
+        return view('trips.option', compact('trip_option', 'page_title'));
+    }
+
+    public function bookmark($id)
+    {
+        $trip_option = TripOption::findOrFail($id);
+        $trip_option->alert = !$trip_option->alert;
+        $trip_option->save();
+        return redirect()->route('trips.show', $trip_option->trip_id);
     }
 }

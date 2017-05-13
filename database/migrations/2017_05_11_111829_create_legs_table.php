@@ -16,7 +16,7 @@ class CreateLegsTable extends Migration
         Schema::create('legs', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('segment_id')->unsigned();
-            $table->string('code')->unique();
+            $table->string('code');
             $table->string('aircraft');
             $table->string('origin_airport');
             $table->string('origin_airport_name');

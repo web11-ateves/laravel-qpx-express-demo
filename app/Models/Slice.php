@@ -30,4 +30,23 @@ class Slice extends Model
         return $this->hasMany('App\Models\Segment');
     }
 
+    public function companies()
+    {
+        return str_limit(join(" / ", $this->segments->pluck('carrier_name')->all()), $limit = 40, $end = '...');
+    }
+
+    public function getConnectionDurationAttribute($value)
+    {
+        return $this->minToHours($value);
+    }
+
+    public function getDurationAttribute($value)
+    {
+        return $this->minToHours($value);
+    }
+
+    private function minToHours($value){
+        return date('H:i', mktime(0,$value));
+    }
+
 }

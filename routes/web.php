@@ -14,3 +14,9 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::resource('trips', 'TripsController');
+
+Route::get('trips/options/{id}', 'TripsController@trip_option')->name('trips.option');
+Route::get('trips/options/{id}/bookmark', 'TripsController@bookmark')->name('trips.option.bookmark');

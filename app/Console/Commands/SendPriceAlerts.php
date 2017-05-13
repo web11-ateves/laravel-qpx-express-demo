@@ -3,9 +3,12 @@
 namespace App\Console\Commands;
 
 use App\Mail\PriceAlert;
+use App\Models\Price;
 use App\Models\Trip;
+use App\Models\TripOption;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class SendPriceAlerts extends Command
@@ -43,28 +46,53 @@ class SendPriceAlerts extends Command
     {
         $this->info('Started checking flights prices variation...');
 
-        setlocale(LC_MONETARY, 'pt_BR');
-
         $trips = Trip::where('end_date', '>', Carbon::today())
-            ->orWhere('departure_date', '<', Carbon::today()->addDays(10))
+            ->orWhere('departure_date', '<', Carbon::today()->addDays(5))
             ->get();
-        foreach($trips as $trip) {
-            $trip_options = $trip->trip_options;
-            foreach($trip_options as $trip_option) {
-                $prices = $trip_option->prices;
 
-                $last_price = $prices->pop();
-                $last_price_total_brl = $last_price->price_total_brl;
-                $previous_price = $prices->pop();
-                if ($previous_price && $last_price_total_brl < $previous_price->price_total_brl ){
-                    $dif = $last_price_total_brl - $previous_price->price_total_brl;
-                    $value = money_format("%n", $last_price->price_total_brl);
-                    $message = "$value ($dif)";
-                    $title = $trip->description;
-                    //Mail::to($trip->user)->send(new PriceAlert($message, $title));
-                    $this->line($message);
-                }
+        foreach($trips as $trip) {
+
+            $optionsByDate = $trip->trip_options()
+                                    ->withPrices()
+                                    ->selectedColumns()
+                                    ->where('alert', true)
+                                    ->where("prices.created_at", ">", Carbon::now()->subHour(4))
+                                    ->orderBy("prices.created_at", "DESC")
+                                    ->orderBy("prices.price_total_brl", "ASC");
+
+            //dd($optionsByDate->toSql());
+
+            $newest = $optionsByDate->get()->first();
+
+            $optionsByPrice = $trip->trip_options()
+                                    ->withPrices()
+                                    ->selectedColumns()
+                                    ->orderBy("price_total_brl", "ASC");
+
+            if($newest) {
+                $optionsByPrice->whereNotIn('prices.id', [$newest->price_id]);
             }
+
+            //dd($optionsByPrice->toSql());
+
+            $cheapest = $optionsByPrice->first();
+
+            $newest_total = $newest ?  $newest->price_total_brl : 0;
+            $cheapest_total = $cheapest->price_total_brl;
+
+            //dd($newest_total, $cheapest_total);
+            //dd($newest->id, $cheapest->id);
+
+            if ($newest && ($newest_total < $cheapest_total)){
+                $dif = $newest_total - $cheapest_total;
+                $value = toReal($newest_total);
+                $summary = "$value ($dif)";
+                $title = $trip->description;
+                $trip_option = TripOption::find($newest->id);
+                $this->line($summary);
+                Mail::to($trip->user)->send(new PriceAlert($summary, $title, $trip_option));
+            }
+
         }
 
     }

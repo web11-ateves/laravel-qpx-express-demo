@@ -17,6 +17,10 @@ class CreateTripOptionsTable extends Migration
             $table->increments('id');
             $table->integer('trip_id')->unsigned();
             $table->string('code')->unique();
+            $table->integer('duration')->nullable();
+            $table->integer('connection_duration')->nullable();
+            $table->integer('stops')->nullable();
+            $table->boolean('alert')->default(true);
             $table->timestamps();
         });
     }
