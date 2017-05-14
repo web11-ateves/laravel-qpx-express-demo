@@ -16,6 +16,7 @@
                             <th>Volta</th>
                             <th>Roundtrip</th>
                             <th>Nonstop</th>
+                            <th>Preço</th>
                             <th>Ações</th>
                         </tr></thead>
                         <tbody>
@@ -29,6 +30,7 @@
                                 <td>{{ display_date($trip->return_date) }}</td>
                                 <td>{{ toAffirmative($trip->roundtrip) }}</td>
                                 <td>{{ toAffirmative($trip->nonstop) }}</td>
+                                <td>{{ toReal($trip->min_price) }}</td>
                                 <td>
                                     @include('shared._table_actions', ['object' => $trip, 'showUrl' => route("trips.show", $trip->id),'deleteUrl' => route("trips.destroy", $trip->id)])
                                 </td>

@@ -22,5 +22,10 @@ function toMoney($amount)
 
 function toReal($amount)
 {
-    return 'R$ ' . toMoney($amount);
+    if(isset($amount)) {
+        return 'R$ ' . toMoney($amount);
+    } else {
+        return "-";
+    }
+
 }

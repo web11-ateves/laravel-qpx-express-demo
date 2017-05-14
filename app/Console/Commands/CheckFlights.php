@@ -116,7 +116,7 @@ class CheckFlights extends Command
 
             foreach($trip_options as $trip_option) {
 
-                $codeArray = [];
+                $codeArray = [$trip->id];
                 $slices = $trip_option->slice;
                 foreach ($slices as $slice) {
                     $segments = $slice->segment;

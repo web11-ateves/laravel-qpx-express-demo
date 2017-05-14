@@ -21,6 +21,7 @@ class CreateTripOptionsTable extends Migration
             $table->integer('connection_duration')->nullable();
             $table->integer('stops')->nullable();
             $table->boolean('alert')->default(true);
+            $table->decimal('min_price', 8, 2);
             $table->timestamps();
         });
     }

@@ -35,6 +35,7 @@ class CreateTripsTable extends Migration
             $table->integer('children')->nullable();
             $table->integer('seniors')->nullable();
             $table->date('end_date');
+            $table->decimal('min_price', 8, 2);
             $table->timestamps();
         });
     }

@@ -46,5 +46,4 @@ class Trip extends Model
         $this->attributes['max_stops'] = $this->nonstop ? 0 : $value;
     }
 
-
 }

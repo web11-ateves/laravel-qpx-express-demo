@@ -61,12 +61,14 @@ class SendPriceAlerts extends Command
                                     ->orderBy("prices.price_total_brl", "ASC");
 
             //dd($optionsByDate->toSql());
+            $this->line(1);
 
             $newest = $optionsByDate->get()->first();
 
             $optionsByPrice = $trip->trip_options()
                                     ->withPrices()
                                     ->selectedColumns()
+                                    ->where('alert', true)
                                     ->orderBy("price_total_brl", "ASC");
 
             if($newest) {
@@ -74,11 +76,17 @@ class SendPriceAlerts extends Command
             }
 
             //dd($optionsByPrice->toSql());
+            $this->line(2);
 
             $cheapest = $optionsByPrice->first();
 
             $newest_total = $newest ?  $newest->price_total_brl : 0;
             $cheapest_total = $cheapest->price_total_brl;
+
+            $min_price = $trip->min_price;
+            if(!isset($min_price) || $cheapest_total < $min_price){
+                $trip->min_price = $cheapest_total;
+            }
 
             //dd($newest_total, $cheapest_total);
             //dd($newest->id, $cheapest->id);
@@ -90,7 +98,12 @@ class SendPriceAlerts extends Command
                 $title = $trip->description;
                 $trip_option = TripOption::find($newest->id);
                 $this->line($summary);
+                $trip->min_price = $cheapest_total;
                 Mail::to($trip->user)->send(new PriceAlert($summary, $title, $trip_option));
+            }
+
+            if($trip->min_price != $min_price){
+                $trip->save();
             }
 
         }
