@@ -45,7 +45,7 @@ class TripOption extends Model
     public function scopeSortBy($query, $sort)
     {
         if($sort == 'price') {
-            return $query->withPrices()->orderBy("price_total_brl", "ASC");
+            return $query->withPrices()->selectedColumns()->orderBy("price_total_brl", "ASC");
         } else if ($sort == 'duration') {
             return $query->orderBy("duration", "ASC");
         } else {

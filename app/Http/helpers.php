@@ -2,7 +2,7 @@
 
 function display_datetime($date)
 {
-    return $date->format('d/m/y H:i');
+    return $date->format('H:i d/m/y');
 }
 
 function display_date($date)
