@@ -222,6 +222,9 @@ class CheckFlights extends Command
                                 $lg->mileage = $mileage;
                                 $lg->change_plane = isset($leg->changePlane);
                                 $lg->connection_duration = isset($leg->connectionDuration) ? $leg->connectionDuration : 0;
+                                if(isset($leg->operatingDisclosure)){
+                                    $lg->operating_disclosure = $leg->operatingDisclosure;
+                                }
                                 $lg->segment_id = $sg->id;
                                 $lg->save();
                                 $this->line("      Leg $leg_id created successfully");

@@ -30,6 +30,7 @@ class CreateLegsTable extends Migration
             $table->integer('connection_duration');
             $table->boolean('change_plane')->default(false);
             $table->integer('mileage');
+            $table->text('operating_disclosure')->nullable();
             $table->timestamps();
         });
     }
