@@ -37,9 +37,6 @@
 <!-- Sweet Alert -->
 <script src="/admin-lte/plugins/sweetalert/dist/sweetalert.min.js"></script>
 <!-- Web11 -->
-<script type="text/javascript" src="/corretor/assets/js/plugins/jquery.validate.min.js"></script>
-<script type="text/javascript" src="/corretor/assets/js/plugins/jquery.maskedinput.js"></script>
-<script type="text/javascript" src="/corretor/assets/js/plugins/jquery.fancybox.js"></script>
-<script type="text/javascript" src="/corretor/assets/js/app.js"></script>
+<script type="text/javascript" src="/js/app.js"></script>
 
 @yield('scripts')

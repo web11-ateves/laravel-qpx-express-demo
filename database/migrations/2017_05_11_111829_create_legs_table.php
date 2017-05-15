@@ -32,6 +32,7 @@ class CreateLegsTable extends Migration
             $table->integer('mileage');
             $table->text('operating_disclosure')->nullable();
             $table->timestamps();
+            $table->foreign('segment_id')->references('id')->on('segments')->onDelete('cascade');
         });
     }
 

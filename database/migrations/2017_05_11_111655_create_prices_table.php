@@ -21,6 +21,7 @@ class CreatePricesTable extends Migration
             $table->decimal('base_fare_usd', 8, 2);
             $table->decimal('taxes_brl', 8, 2);
             $table->timestamps();
+            $table->foreign('trip_option_id')->references('id')->on('trip_options')->onDelete('cascade');
         });
     }
 

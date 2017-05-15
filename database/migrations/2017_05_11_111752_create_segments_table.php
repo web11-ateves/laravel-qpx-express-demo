@@ -29,6 +29,7 @@ class CreateSegmentsTable extends Migration
             $table->dateTime('departure_time')->nullable();
             $table->dateTime('arrival_time')->nullable();
             $table->timestamps();
+            $table->foreign('slice_id')->references('id')->on('slices')->onDelete('cascade');
         });
     }
 

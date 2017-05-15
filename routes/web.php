@@ -18,6 +18,6 @@
 Route::get('/', 'TripsController@index');
 
 Route::resource('trips', 'TripsController');
+Route::resource('trip_options', 'TripOptionsController');
 
-Route::get('trips/options/{id}', 'TripsController@trip_option')->name('trips.option');
-Route::get('trips/options/{id}/bookmark', 'TripsController@bookmark')->name('trips.option.bookmark');
+Route::get('trips_options/{id}/bookmark', 'TripOptionsController@bookmark')->name('trip_options.bookmark');

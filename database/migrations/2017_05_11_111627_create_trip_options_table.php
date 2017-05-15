@@ -23,6 +23,7 @@ class CreateTripOptionsTable extends Migration
             $table->boolean('alert')->default(true);
             $table->decimal('min_price', 8, 2);
             $table->timestamps();
+            $table->foreign('trip_id')->references('id')->on('trips')->onDelete('cascade');
         });
     }
 

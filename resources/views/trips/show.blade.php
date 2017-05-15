@@ -39,16 +39,15 @@
                                     <?php $cheapest = $trip_option->prices()->cheapest(); ?>
                                     #{{ $trip_option->id }} - {{ toReal($cheapest->price_total_brl) }}
                                     </strong>
-                                    ({{display_datetime($cheapest->created_at) }})
                                 </td>
                                 <td>{{ toAffirmative($trip_option->alert) }}</td>
                                 <td>
                                     <div class="btn-group btn-group-xs">
-                                        <a title="Favoritar" class="btn btn-primary" href="{{route('trips.option.bookmark', $trip_option->id)}}">
+                                        <a title="Favoritar" class="btn btn-primary" href="{{route('trip_options.bookmark', $trip_option->id)}}">
                                             <i class="fa {{ $trip_option->alert ? 'fa-bookmark-o' : 'fa-bookmark' }}"></i>
                                         </a>
                                     </div>
-                                    @include('shared._table_actions', ['object' => $trip_option, 'showUrl' => route("trips.option", $trip_option->id)])
+                                    @include('shared._table_actions', ['object' => $trip_option, 'showUrl' => route("trip_options.show", $trip_option->id), 'deleteUrl' => route("trip_options.destroy", $trip_option->id)])
                                 </td>
                             </tr>
                             @foreach($trip_option->slices as $slice)

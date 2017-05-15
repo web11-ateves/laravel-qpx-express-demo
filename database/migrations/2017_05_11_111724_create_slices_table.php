@@ -25,6 +25,8 @@ class CreateSlicesTable extends Migration
             $table->integer('connection_duration')->nullable();
             $table->integer('stops')->nullable();
             $table->timestamps();
+            $table->foreign('trip_option_id')->references('id')->on('trip_options')->onDelete('cascade');
+
         });
     }
 

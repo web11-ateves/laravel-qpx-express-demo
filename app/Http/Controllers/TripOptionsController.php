@@ -6,7 +6,7 @@ use App\Models\Trip;
 use App\Models\TripOption;
 use Illuminate\Http\Request;
 
-class TripsController extends Controller
+class TripOptionsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +15,7 @@ class TripsController extends Controller
      */
     public function index()
     {
-        $trips = Trip::all();
-        $page_title = "Pesquisas";
-        return view('trips.index', compact('trips', 'page_title'));
+        //
     }
 
     /**
@@ -49,11 +47,9 @@ class TripsController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $trip = Trip::findOrFail($id);
-        $sort = $request->input('s', 'agony');
-        $trip_options = $trip->trip_options()->sortBy($sort)->get()->unique();
-        $page_title = $trip->description;
-        return view('trips.show', compact('trip_options', 'page_title', 'sort'));
+        $trip_option = TripOption::findOrFail($id);
+        $page_title = "#$trip_option->id - Histórico de preços";
+        return view('trip_options.show', compact('trip_option', 'page_title'));
     }
 
     /**
@@ -87,6 +83,16 @@ class TripsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $trip_option = TripOption::findOrFail($id);
+        $trip_option->delete();
+        return redirect()->route('trips.show', $trip_option->trip_id);
+    }
+
+    public function bookmark($id)
+    {
+        $trip_option = TripOption::findOrFail($id);
+        $trip_option->alert = !$trip_option->alert;
+        $trip_option->save();
+        return redirect()->route('trips.show', $trip_option->trip_id);
     }
 }
