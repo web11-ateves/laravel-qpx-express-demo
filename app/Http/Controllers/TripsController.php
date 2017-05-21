@@ -27,7 +27,9 @@ class TripsController extends Controller
      */
     public function create()
     {
-        //
+        $page_title = "Nova viagem";
+        $trip = new Trip;
+        return view('trips.create', compact('page_title', 'trip'));
     }
 
     /**
@@ -38,7 +40,9 @@ class TripsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $trip = Trip::create($request->all());
+        $request->session()->flash('message', 'Viagem criada com sucesso!');
+        return redirect('trips');
     }
 
     /**
@@ -52,8 +56,9 @@ class TripsController extends Controller
         $trip = Trip::findOrFail($id);
         $sort = $request->input('s', 'agony');
         $trip_options = $trip->trip_options()->sortBy($sort)->get()->unique();
+        $min_prices = $trip->min_prices;
         $page_title = $trip->description;
-        return view('trips.show', compact('trip_options', 'page_title', 'sort'));
+        return view('trips.show', compact('trip', 'min_prices', 'trip_options', 'page_title', 'sort'));
     }
 
     /**
@@ -64,7 +69,9 @@ class TripsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $trip = Trip::findOrFail($id);
+        $page_title = "Editando Viagem #". $trip->id;
+        return view('trips.edit', compact('trip', 'page_title'));
     }
 
     /**
@@ -76,7 +83,18 @@ class TripsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $trip = Trip::findOrFail($id);
+        $trip->fill($request->all());
+        $flexible_dates = $request->input('flexible_dates');
+        if(!$flexible_dates) {
+            $trip->departure_date_end = null;
+        }
+        if(!$trip->roundtrip) {
+            $trip->return_date = null;
+        }
+        $trip->save();
+        $request->session()->flash('message', 'Viagem atualizada com sucesso!');
+        return redirect('trips');
     }
 
     /**
@@ -85,8 +103,20 @@ class TripsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        $trip = Trip::findOrFail($id);
+        $trip->delete();
+        $request->session()->flash('message', 'Viagem removida com sucesso!');
+
+        return redirect('trips');
+    }
+
+    public function bookmark($id)
+    {
+        $trip = Trip::findOrFail($id);
+        $trip->alert = !$trip->alert;
+        $trip->save();
+        return redirect('trips');
     }
 }

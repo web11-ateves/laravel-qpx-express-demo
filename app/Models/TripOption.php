@@ -62,8 +62,7 @@ class TripOption extends Model
     {
         $data = "";
         foreach ($this->prices as $price) {
-            $value = $price->price_total_brl;
-            $data = $data . "[new Date('{$price->created_at}'), {$value}],";
+            $data = $data . "[new Date('{$price->created_at}'), {$price->price_total_brl}],";
         }
         return $data;
     }

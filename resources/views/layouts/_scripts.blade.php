@@ -36,6 +36,8 @@
 <script src="/admin-lte/dist/js/app.min.js"></script>
 <!-- Sweet Alert -->
 <script src="/admin-lte/plugins/sweetalert/dist/sweetalert.min.js"></script>
+<!-- Masks -->
+<script src="/admin-lte/plugins/input-mask/jquery.inputmask.js"></script>
 <!-- Web11 -->
 <script type="text/javascript" src="/js/app.js"></script>
 

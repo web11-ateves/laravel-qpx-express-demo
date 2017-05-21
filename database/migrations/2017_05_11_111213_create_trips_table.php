@@ -21,7 +21,8 @@ class CreateTripsTable extends Migration
             $table->string('destination');
             $table->boolean('roundtrip');
             $table->date('departure_date');
-            $table->date('return_date');
+            $table->date('return_date')->nullable();
+            $table->date('departure_date_end')->nullable();
             $table->boolean('nonstop');
             $table->string('permitted_carriers')->nullable();
             $table->string('prohibited_carriers')->nullable();
@@ -36,6 +37,8 @@ class CreateTripsTable extends Migration
             $table->integer('seniors')->nullable();
             $table->date('end_date');
             $table->decimal('min_price', 8, 2);
+            $table->boolean('alert')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

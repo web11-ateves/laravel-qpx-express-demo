@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="box">
-                <div id="chart" ></div>
+                <div id="chart"></div>
             </div>
         </div>
     </div>

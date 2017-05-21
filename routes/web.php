@@ -21,3 +21,4 @@ Route::resource('trips', 'TripsController');
 Route::resource('trip_options', 'TripOptionsController');
 
 Route::get('trips_options/{id}/bookmark', 'TripOptionsController@bookmark')->name('trip_options.bookmark');
+Route::get('trips/{id}/bookmark', 'TripsController@bookmark')->name('trips.bookmark');

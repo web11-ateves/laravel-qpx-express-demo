@@ -1,3 +1,11 @@
+@if (isset($bookmarkUrl))
+<div class="btn-group btn-group-xs">
+    <a title="{{ $object->alert ? 'Parar de monitorar' : 'Monitorar' }}" class="btn btn-primary" href="{{$bookmarkUrl}}">
+        <i class="glyphicon {{ $object->alert ? 'glyphicon-star' : 'glyphicon-star-empty' }}"></i>
+    </a>
+</div>
+@endif
+
 @if (isset($showUrl))
     <div class="btn-group btn-group-xs">
         <a title="Detalhes" class="btn btn-primary" href="{{ $showUrl }}">

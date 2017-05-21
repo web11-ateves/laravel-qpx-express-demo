@@ -27,12 +27,16 @@
                                 <td>{{ $trip->origin }}</td>
                                 <td>{{ $trip->destination }}</td>
                                 <td>{{ display_date($trip->departure_date) }}</td>
-                                <td>{{ display_date($trip->return_date) }}</td>
+                                <td>{{ $trip->return_date ? display_date($trip->return_date) : "-" }}</td>
                                 <td>{{ toAffirmative($trip->roundtrip) }}</td>
                                 <td>{{ toAffirmative($trip->nonstop) }}</td>
                                 <td>{{ toReal($trip->min_price) }}</td>
                                 <td>
-                                    @include('shared._table_actions', ['object' => $trip, 'showUrl' => route("trips.show", $trip->id),'deleteUrl' => route("trips.destroy", $trip->id)])
+                                    @include('shared._table_actions', ['object' => $trip,
+                                    'showUrl' => route("trips.show", $trip->id),
+                                    'deleteUrl' => route("trips.destroy", $trip->id),
+                                    'bookmarkUrl' => route('trips.bookmark', $trip->id),
+                                    'editUrl' => route('trips.edit', $trip->id)])
                                 </td>
                             </tr>
                         @endforeach
@@ -44,7 +48,7 @@
 
     <div class="row">
         <div class="col-xs-12">
-            <a href="" class="btn btn-primary">Nova pesquisa</a>
+            <a href="{{ route("trips.create") }}" class="btn btn-primary">Nova pesquisa</a>
         </div>
     </div>
 

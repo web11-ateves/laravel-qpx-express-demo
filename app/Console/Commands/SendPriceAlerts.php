@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Mail\PriceAlert;
-use App\Models\Price;
+use App\Models\MinimumPrice;
 use App\Models\Trip;
 use App\Models\TripOption;
 use Carbon\Carbon;
@@ -84,7 +84,6 @@ class SendPriceAlerts extends Command
             $cheapest_total = $cheapest->price_total_brl;
 
             $min_price = $trip->min_price;
-            $trip->min_price = $cheapest_total;
 
             $this->line("  Mais recente: " . $newest_total);
             $this->line("  Mais barato: " . $cheapest_total);
@@ -95,13 +94,20 @@ class SendPriceAlerts extends Command
                 $dif = $newest_total - $cheapest_total;
                 $value = toReal($newest_total);
                 $summary = "$value ($dif)";
-                $title = $trip->description;
                 $trip_option = TripOption::find($newest->id);
                 $this->line("  " . $summary);
-                $trip->min_price = $newest_total;
-                Mail::to($trip->user)->send(new PriceAlert($summary, $title, $trip_option));
+                $cheapest_total = $newest_total;
+                $cheapest = $newest;
+                Mail::to($trip->user)->send(new PriceAlert($summary, $trip->description, $trip_option));
             }
 
+            $trip_min_price = new MinimumPrice;
+            $trip_min_price->value = $cheapest_total;
+            $trip_min_price->trip_id = $trip->id;
+            $trip_min_price->trip_option_id = $cheapest->id;
+            $trip_min_price->save();
+
+            $trip->min_price = $cheapest_total;
             if($trip->min_price != $min_price){
                 $trip->save();
             }

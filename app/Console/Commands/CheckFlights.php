@@ -51,7 +51,7 @@ class CheckFlights extends Command
 
         $this->info('Started checking flights...');
 
-        $trips = Trip::all();
+        $trips = Trip::where('alert', true)->get();
         foreach($trips as $trip) {
 
             $this->line($trip->description);

@@ -42,12 +42,10 @@
                                 </td>
                                 <td>{{ toAffirmative($trip_option->alert) }}</td>
                                 <td>
-                                    <div class="btn-group btn-group-xs">
-                                        <a title="Favoritar" class="btn btn-primary" href="{{route('trip_options.bookmark', $trip_option->id)}}">
-                                            <i class="fa {{ $trip_option->alert ? 'fa-bookmark-o' : 'fa-bookmark' }}"></i>
-                                        </a>
-                                    </div>
-                                    @include('shared._table_actions', ['object' => $trip_option, 'showUrl' => route("trip_options.show", $trip_option->id), 'deleteUrl' => route("trip_options.destroy", $trip_option->id)])
+                                    @include('shared._table_actions', ['object' => $trip_option,
+                                    'showUrl' => route("trip_options.show", $trip_option->id),
+                                    'deleteUrl' => route("trip_options.destroy", $trip_option->id),
+                                    'bookmarkUrl' => route('trip_options.bookmark', $trip_option->id)])
                                 </td>
                             </tr>
                             @foreach($trip_option->slices as $slice)
@@ -71,6 +69,14 @@
 
     <div class="row">
         <div class="col-xs-12">
+            <div class="box">
+                <div id="chart"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
             <a href="{{ route('trips.index') }}" class="btn btn-primary">Voltar</a>
         </div>
     </div>
@@ -79,8 +85,29 @@
 
 @section("scripts")
     @parent
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+
     <script>
-        //$("#trip-option-table").DataTable();
+        google.charts.load('current', {'packages':['corechart', 'line']});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('datetime', 'Data da coleta');
+            data.addColumn('number', 'R$');
+
+            data.addRows([{!! $trip->chartData() !!}]);
+
+            var options = {
+                hAxis: { title: 'Data' },
+                vAxis: { title: 'R$' },
+                height: 400,
+                legend: { position: 'none' }
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('chart'));
+
+            chart.draw(data, options);
+        }
     </script>
 @endsection
 
