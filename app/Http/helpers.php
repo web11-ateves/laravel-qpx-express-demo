@@ -7,7 +7,7 @@ function display_datetime($date)
 
 function display_date($date)
 {
-    return $date->format('d/m/y');
+    return $date->format('d/m/Y');
 }
 
 function toAffirmative($expression)

@@ -135,12 +135,12 @@
 <div class="row">
     <div class="col-md-6">
         <div class="form-group">
-            {!! Form::submit('Salvar', ['class' => 'btn btn-primary']) !!}
+            <a href="{{ route('trips.index') }}" class="btn btn-primary">Voltar</a>
         </div>
     </div>
     <div class="col-md-6">
         <div class="form-group pull-right">
-            <a href="{{ route('trips.index') }}" class="btn btn-primary">Voltar</a>
+            {!! Form::submit('Salvar', ['class' => 'btn btn-primary']) !!}
         </div>
     </div>
 </div>
